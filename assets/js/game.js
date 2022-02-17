@@ -1,20 +1,69 @@
-//window.alert("this window is working");
-//this creates the fighting function
+var playerName = window.prompt("What is your robot's name?");
+var playerHealth = 100;
+var playerAttack = 10;
+var playerMoney = 10;
 
-function fight() {
-  window.alert("the fight has begun");
+// You can also log multiple values at once like this
+console.log(playerName, playerAttack, playerHealth);
+
+var enemyNames = ["Roberto", "Amy Andriod", "Robo Trouble"];
+var enemyHealth = 50;
+var enemyAttack = 12;
+
+for (var i = 0; i < enemyNames.length; i++) {
+  fight(enemyNames[i]);
+}
+
+function fight(enemyNames) {
+  window.alert("Welcome to Robot Gladiators!");
+  var promptFight = window.prompt(
+    "Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose."
+  );
+  if (promptFight === "fight" || promptFight === "FIGHT") {
+    playerHealth = playerHealth - enemyAttack;
+    console.log(
+      enemyNames +
+        " attacked " +
+        playerName +
+        ". " +
+        playerName +
+        " now has " +
+        playerHealth +
+        " health remaining."
+    );
+    if (enemyHealth <= 0) {
+      window.alert(enemyNames + " has died!");
+    } else {
+      window.alert(enemyNames + " still has " + enemyHealth + " health left.");
+    }
+    playerHealth = playerHealth - enemyAttack;
+    console.log(
+      enemyNames +
+        " attacked " +
+        playerName +
+        ". " +
+        playerName +
+        " now has " +
+        playerHealth +
+        " health remaining."
+    );
+
+    if (playerHealth <= 0) {
+      window.alert(playerName + " has died!");
+    } else {
+      window.alert(playerName + " still has " + playerHealth + " health left.");
+    }
+  } else if (promptFight === "skip" || promptFight === "SKIP") {
+    window.alert(playerName + " has chosen to skip the fight!");
+    var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+    if (confirmSkip) {
+      window.alert(playerName + " has decided to skip this fight. Goodbye!");
+      playerMoney = playerMoney - 2;
+    } else {
+      fight();
+    }
+  } else {
+    window.alert("You need to choose a valid option. Try again!");
+  }
 }
 fight();
-var playerName = "tony the robot";
-
-window.prompt("What is your robot's name?");
-var playerName = window.prompt("What is your robot's name?");
-// Note the lack of quotation marks around playerName
-window.alert(playerName);
-//what is this?
-console.log(playerName);
-console.log("This logs a string, good for leaving yourself a message");
-// this will do math and log 20
-console.log(10 + 10);
-// what is this?
-console.log("Our robot's name is " + playerName);
