@@ -2,15 +2,22 @@ var playerName = window.prompt("What is your robot's name?");
 var playerHealth = 100;
 var playerAttack = 100;
 var playerMoney = 10;
+var min = 40;
+var max = 60;
 
 console.log(playerName, playerAttack, playerHealth);
 
 var enemyNames = ["Roberto", "Amy Andriod", "Robo Trouble"];
 var enemyHealth = 5;
 var enemyAttack = 10;
+var randomNumber = function (min, max) {
+  var value = Math.floor(Math.random() * (60 - 40 + 1) + 40);
+
+  return value;
+};
 
 var fight = function (enemyName) {
-  enemyName = enemyNames[0];
+  enemyName = enemyNames[i + 1];
   while (playerHealth > 0 && enemyHealth > 0) {
     var promptFight = window.prompt(
       'Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.'
@@ -21,13 +28,13 @@ var fight = function (enemyName) {
 
       if (confirmSkip) {
         window.alert(playerName + " has decided to skip this fight. Goodbye!");
-        playerMoney = playerMoney - 10;
+        playerMoney = Math.max(0, playerMoney - 10);
         console.log("playerMoney", playerMoney);
         fight(enemyIndex++);
       }
     }
 
-    enemyHealth = playerAttack - enemyHealth;
+    enemyHealth = Math.max(0, enemyHealth - playerAttack);
     console.log(
       playerName +
         " attacked " +
@@ -47,7 +54,9 @@ var fight = function (enemyName) {
       window.alert(enemyName + " still has " + enemyHealth + " health left.");
     }
 
-    playerHealth = playerHealth - enemyAttack;
+    var damage = randomNumber(enemyAttack - 3, enemyAttack);
+
+    playerHealth = Math.max(0, playerHealth - damage);
     console.log(
       enemyName +
         " attacked " +
@@ -80,7 +89,9 @@ var startGame = function () {
     if (playerHealth > 0) {
       window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
       var pickedEnemyName = enemyNames[i];
-      enemyHealth = 50;
+      var damage = randomNumber(playerAttack - 3, playerAttack);
+
+      enemyHealth = Math.max(0, enemyHealth - damage);
       fight(pickedEnemyName);
       if (playerHealth > 0 && i < enemyNames.length - 1) {
         var storeConfirm = window.confirm(
