@@ -1,5 +1,5 @@
 var randomNumber = function (min, max) {
-  var value = Math.floor(Math.random() * (16 - 14 + 11) + 4);
+  var value = Math.floor(Math.random() * (26 - 14 + 11) + 4);
 
   return value;
 };
@@ -53,7 +53,7 @@ var fightOrSkip = function () {
   var promptFight = window.prompt(
     'Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.'
   );
-  if (promptFight === "" || promptFight === null) {
+  if (promptFight === " " || promptFight === null) {
     window.alert("You need to provide a valid answer! Please try again.");
     return fightOrSkip();
   }
@@ -75,55 +75,63 @@ var fightOrSkip = function () {
 };
 
 var fight = function (enemy) {
-  enemy.name = enemy.name[0];
+  var isPlayerTurn = true;
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
   while (playerInfo.health > 0 && enemy.health > 0) {
-    if (fightOrSkip()) {
-      break;
-    }
-    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+    if (isPlayerTurn) {
+      if (fightOrSkip()) {
+        break;
+      }
+      var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
-    enemy.health = Math.max(0, enemy.health - playerInfo.attack);
-    console.log(
-      playerInfo.name +
-        " attacked " +
-        enemy.name +
-        ". " +
-        enemy.name +
-        " now has " +
-        enemy.health +
-        " health remaining."
-    );
-
-    if (enemy.health <= 0) {
-      window.alert(enemy.name + " has died!");
-      playerInfo.money = playerInfo.money + 20;
-      break;
-    } else {
-      window.alert(enemy.name + " still has " + enemy.health + " health left.");
-    }
-
-    var damage = randomNumber(enemy.attack - 3, enemy.attack);
-
-    playerInfo.health = Math.max(0, playerInfo.health - damage);
-    console.log(
-      enemy.name +
-        " attacked " +
+      enemy.health = Math.max(0, enemy.health - damage);
+      console.log(
         playerInfo.name +
-        ". " +
-        playerInfo.name +
-        " now has " +
-        playerInfo.health +
-        " health remaining."
-    );
-
-    if (playerInfo.health <= 0) {
-      window.alert(playerInfo.name + " has died!");
-      break;
-    } else {
-      window.alert(
-        playerInfo.name + " still has " + playerInfo.health + " health left."
+          " attacked " +
+          enemy.name +
+          ". " +
+          enemy.name +
+          " now has " +
+          enemy.health +
+          " health remaining."
       );
+
+      if (enemy.health <= 0) {
+        window.alert(enemy.name + " has died!");
+        playerInfo.money = playerInfo.money + 20;
+        break;
+      } else {
+        window.alert(
+          enemy.name + " still has " + enemy.health + " health left."
+        );
+      }
+
+      var damage = randomNumber(enemy.attack - 3, enemy.attack);
+
+      playerInfo.health = Math.max(0, playerInfo.health - damage);
+      console.log(
+        enemy.name +
+          " attacked " +
+          playerInfo.name +
+          ". " +
+          playerInfo.name +
+          " now has " +
+          playerInfo.health +
+          " health remaining."
+      );
+
+      if (playerInfo.health <= 0) {
+        window.alert(playerInfo.name + " has died!");
+        break;
+      } else {
+        window.alert(
+          playerInfo.name + " still has " + playerInfo.health + " health left."
+        );
+      }
     }
+    isPlayerTurn = !isPlayerTurn;
   }
   endGame();
 };
@@ -167,6 +175,7 @@ var endGame = function (enemyIndex) {
   } else {
     window.alert("You've lost your robot in battle.");
   }
+  playAgainConfirm();
 };
 var shop = function () {
   var shopOptionPrompt = window.prompt(
@@ -193,10 +202,13 @@ var shop = function () {
       break;
   }
 };
-var playAgainConfirm = window.confirm("Would you like to play again?");
+var playAgainConfirm = function () {
+  window.confirm("Would you like to play again?");
 
-if (playAgainConfirm) {
-  startGame();
-} else {
-  window.alert("Thank you for playing Robot Gladiators! Come back soon!");
-}
+  if (playAgainConfirm) {
+    startGame();
+  } else {
+    window.alert("Thank you for playing Robot Gladiators! Come back soon!");
+  }
+};
+startGame();
