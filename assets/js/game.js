@@ -1,5 +1,5 @@
 var randomNumber = function (min, max) {
-  var value = Math.floor(Math.random() * (6 - 4 + 1) + 4);
+  var value = Math.floor(Math.random() * (16 - 14 + 11) + 4);
 
   return value;
 };
@@ -49,25 +49,38 @@ var enemyInfo = [
   },
 ];
 
+var fightOrSkip = function () {
+  var promptFight = window.prompt(
+    'Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.'
+  );
+  if (promptFight === "" || promptFight === null) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return fightOrSkip();
+  }
+
+  if (promptFight === "skip" || promptFight === "SKIP") {
+    var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+    if (confirmSkip) {
+      window.alert(
+        playerInfo.name + " has decided to skip this fight. Goodbye!"
+      );
+
+      playerInfo.playerMoney = playerInfo.money - 10;
+      shop();
+      return true;
+    }
+    return false;
+  }
+};
+
 var fight = function (enemy) {
   enemy.name = enemy.name[0];
   while (playerInfo.health > 0 && enemy.health > 0) {
-    var promptFight = window.prompt(
-      'Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.'
-    );
-
-    if (promptFight === "skip" || promptFight === "SKIP") {
-      var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
-      if (confirmSkip) {
-        window.alert(
-          playerInfo.name + " has decided to skip this fight. Goodbye!"
-        );
-        playerInfo.money = Math.max(0, playerInfo.money - 10);
-        console.log("playerMoney", playerInfo.money);
-        fight(enemyIndex++);
-      }
+    if (fightOrSkip()) {
+      break;
     }
+    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
     enemy.health = Math.max(0, enemy.health - playerInfo.attack);
     console.log(
